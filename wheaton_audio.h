@@ -38,7 +38,7 @@ class WheatonAudio {
   private:
     int analog_pin = -1;
 #ifdef ARDUINO_ARCH_RP2040
-    I2S i2s_input(INPUT);
-    I2S i2s_output(OUTPUT);
+    I2S i2s_input;
+    I2S i2s_output;
 #endif
 };

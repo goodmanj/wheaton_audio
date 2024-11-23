@@ -18,11 +18,13 @@ Author: Jason Goodman goodman_jason@wheatoncollege.edu
 #include "wheaton_audio.h"
 
 void WheatonAudio::setup_analog(int pin) {
+// Setup to collect audio data from an analog input pin.
   analog_pin = pin;
   pinMode(pin,INPUT);
 }
 
 int WheatonAudio::read_analog_sample(int *sample, int n_samples, int target_sample_rate) {
+// Read audio samples from an analog input (any Arduino microcontroller)
   int32_t tic,start_micros,end_micros;
   int32_t target_delay_micros;
   int i;
@@ -46,10 +48,11 @@ float WheatonAudio::find_average(int *sample, int n_samples) {
   for (int i = 0; i<n_samples; i++) {
     avg += int32_t(sample[i]);
   }
-  return avg/n_samples;
+  return float(avg)/n_samples;
 }
 
 float WheatonAudio::find_amplitude(int *sample, int n_samples) {
+// - Detect loudness of an audio sample
   float amp, avg;
   avg = find_average(sample,n_samples);
   for (int i = 0; i<n_samples; i++) {    
@@ -59,6 +62,7 @@ float WheatonAudio::find_amplitude(int *sample, int n_samples) {
 }
 
 float WheatonAudio::find_frequency(int *sample, int n_samples, int samplerate) {
+// - Detect main frequency of an audio sample
   int i;
   int this_sample,prev_sample;
   float avg;
@@ -81,3 +85,4 @@ float WheatonAudio::find_frequency(int *sample, int n_samples, int samplerate) {
 //int WheatonAudio::int find_amp_of_frequency(int *sample, int n_samples, int samplerate,int frequency){
   // Discrete Fourier transform 
 //}
+

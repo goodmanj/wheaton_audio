@@ -10,6 +10,7 @@ Audio processing class for robotics projects.  Capabilities:
   - Detect loudness of a given frequency in an audio sample
 To use, put this file in the folder containing
 your project's .ino file, and add a line at the top of the .ino file: 
+    
     #include "wheaton_audio.cpp"
     audio = WheatonAudio();
 
