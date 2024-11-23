@@ -31,14 +31,17 @@ class WheatonAudio {
     int find_amp_of_frequency(int *sample, int n_samples, int samplerate,int frequency);
 
 #ifdef ARDUINO_ARCH_RP2040
-    void setup_i2c(int dataPin, int bclkPin);
-    void read_i2s_sample(int *sample, int n_samples);
+    void setup_i2s_input(int dataPin, int bclkPin);
+    void setup_i2s_output(int dataPin, int bclkPin);
+    int read_i2s_sample(int *sample, int n_samples);
     void play_i2s(int *sample, int n_samples);
 #endif
   private:
     int analog_pin = -1;
 #ifdef ARDUINO_ARCH_RP2040
     I2S i2s_input;
+    int i2s_input_samplerate = 16000;
     I2S i2s_output;
+    int i2s_output_samplerate = 16000;
 #endif
 };

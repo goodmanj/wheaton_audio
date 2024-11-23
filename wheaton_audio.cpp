@@ -48,7 +48,7 @@ float WheatonAudio::find_average(int *sample, int n_samples) {
   for (int i = 0; i<n_samples; i++) {
     avg += int32_t(sample[i]);
   }
-  return float(avg)/n_samples;
+  return avg/n_samples;
 }
 
 float WheatonAudio::find_amplitude(int *sample, int n_samples) {
@@ -86,3 +86,38 @@ float WheatonAudio::find_frequency(int *sample, int n_samples, int samplerate) {
   // Discrete Fourier transform 
 //}
 
+#ifdef ARDUINO_ARCH_RP2040
+  // Setup for I2S input
+  void WheatonAudio::setup_i2s_input(int dataPin, int bclkPin) {
+    i2s_input = I2S(INPUT);
+    i2s_input.setDATA(dataPin);
+    i2s_input.setBCLK(bclkPin); // Note: LRCLK = BCLK + 1
+    i2s_input.setBitsPerSample(32);
+    i2s_input.setFrequency(i2s_input_samplerate);
+    i2s_input.begin();
+  }
+
+  // Setup for I2S output
+  void WheatonAudio::setup_i2s_output(int dataPin, int bclkPin) {
+    i2s_output = I2S(OUTPUT);
+    i2s_output.setDATA(dataPin);
+    i2s_output.setBCLK(bclkPin); // Note: LRCLK = BCLK + 1
+    i2s_output.setBitsPerSample(16);
+    i2s_output.setFrequency(i2s_output_samplerate);
+    i2s_output.begin();
+  }
+
+  int WheatonAudio::read_i2s_sample(int *sample, int n_samples) {
+  // Read audio samples from an I2S input (RP2040 chip only)
+    int i;
+    int32_t sample_l,sample_r; //(left and right channels will be added)
+    for (i=0; i< n_samples; i++) {
+      i2s_input.read32(&sample_l, &sample_r);
+      // darkest bit magic to get numbers into a reasonable range
+      sample[i] = int((sample_l)>>14)+8550; 
+    }
+    return i2s_input_samplerate;
+  }
+  // void play_i2s(int *sample, int n_samples) {
+  // }
+#endif
