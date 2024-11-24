@@ -1,6 +1,6 @@
 /*
-   I2S microphone frequency analysis
-
+   I2S microphone pitch detection
+   
    This uses a Raspberry Pi Pico and an I2S MEMS microphone to detect pitch and loudness.  
    The output is printed to the serial monitor, and can be graphed using the Serial Plotter 
    tool.
