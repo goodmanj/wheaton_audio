@@ -103,8 +103,7 @@ float WheatonAudio::find_frequency(int *sample, int n_samples, int samplerate) {
     i2s_output.setDATA(dataPin);
     i2s_output.setBCLK(bclkPin); // Note: LRCLK = BCLK + 1
     i2s_output.setBitsPerSample(16);
-    i2s_output.setFrequency(i2s_output_samplerate);
-    i2s_output.begin();
+    i2s_output.begin(i2s_output_samplerate);
   }
 
   int WheatonAudio::read_i2s_sample(int *sample, int n_samples) {
@@ -118,6 +117,20 @@ float WheatonAudio::find_frequency(int *sample, int n_samples, int samplerate) {
     }
     return i2s_input_samplerate;
   }
-  // void play_i2s(int *sample, int n_samples) {
-  // }
+
+  void WheatonAudio::play_i2s(int *sample, int n_samples) {
+  // Play audio sample to an I2S output (RP2040 chip only)
+    int i;
+    for (i = 0; i<n_samples; i++) {
+      // Write the sample twice, once for each audio channel.
+      i2s_output.write(uint16_t(sample[i]));
+      i2s_output.write(uint16_t(sample[i]));
+    }
+  }
+
+  void WheatonAudio::wait() {
+  // Wait until all audio output has finished playing.
+      i2s_output.flush();
+  }
+
 #endif

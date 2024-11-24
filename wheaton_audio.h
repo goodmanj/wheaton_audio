@@ -5,7 +5,7 @@
   - Play an audio sample to an I2S output
   - Detect loudness of an audio sample
   - Detect fundamental frequency of an audio sample
-  - Detect loudness of a given frequency in an audio sample
+  - Detect loudness of a given frequency in an audio sample (Future)
 To use, put this file in the folder containing
 your project's .ino file, and add a line at the top of the .ino file: 
     #include "wheaton_audio.cpp"
@@ -35,6 +35,7 @@ class WheatonAudio {
     void setup_i2s_output(int dataPin, int bclkPin);
     int read_i2s_sample(int *sample, int n_samples);
     void play_i2s(int *sample, int n_samples);
+    void wait();
 #endif
   private:
     int analog_pin = -1;
